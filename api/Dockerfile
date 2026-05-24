@@ -20,12 +20,10 @@ COPY pyproject.toml ./
 # uv.lock is optional on first build; copy if present
 COPY uv.loc[k] ./
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --no-dev --no-install-project
+RUN uv sync --no-dev --no-install-project
 
 COPY app ./app
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --no-dev
+RUN uv sync --no-dev
 
 # ── Stage 2: warm-up — pre-download HF model weights ──────────────────────────
 # Bakes the sentiment + embedding models into the image so Cloud Run cold
