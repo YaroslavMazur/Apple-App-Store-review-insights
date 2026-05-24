@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+data/
+
+# Node / web
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+playwright-report/
+test-results/
+.pnpm-store/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# HuggingFace / model caches (if HF_CACHE_DIR points inside the repo)
+hf_cache/
+.cache/
+
+# Firebase deploy artifacts
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+web/.firebaserc
+
+# Google Cloud credentials (never commit JSON keys; we use WIF instead)
+*-credentials.json
+service-account*.json
+gha-creds-*.json
+
+# uv
+.uv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# direnv
+.envrc

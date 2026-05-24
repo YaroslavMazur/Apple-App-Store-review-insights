@@ -1,0 +1,47 @@
+[
+  {
+    "id": "11234567890",
+    "date": "2025-11-12T08:24:01",
+    "is_edited": false,
+    "rating": 5,
+    "content": "Love the new playlist mixer. It's exactly what I've been waiting for.",
+    "title": "Mixer is amazing",
+    "username": "music_fan_42"
+  },
+  {
+    "id": "11234567891",
+    "date": "2025-11-10T17:03:18",
+    "is_edited": true,
+    "rating": 1,
+    "content": "Crashes every time I try to open it after the latest update. Unusable.",
+    "title": "Constant crashes",
+    "username": "frustrated_user"
+  },
+  {
+    "id": "11234567892",
+    "date": "2025-11-09T12:15:00",
+    "is_edited": false,
+    "rating": 3,
+    "content": "Decent app but the new ads in the free tier are way too intrusive.",
+    "title": "Too many ads now",
+    "username": "casual_listener"
+  },
+  {
+    "id": "11234567893",
+    "date": "2025-11-08T22:47:55",
+    "is_edited": false,
+    "rating": 4,
+    "content": "Search got better. Still wish the offline downloads were faster.",
+    "title": "Improving",
+    "username": "podcast_lover"
+  },
+  {
+    "id": "11234567894",
+    "date": "2025-11-07T03:12:09",
+    "is_edited": false,
+    "rating": 2,
+    "content": "Battery drain on iOS 18 is brutal. Please fix.",
+    "title": "Battery issues",
+    "username": "iphone_owner"
+  }
+]

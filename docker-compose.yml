@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: ./api
+    image: apple-reviews-api:dev
+    container_name: apple-reviews-api
+    environment:
+      ENV: dev
+      LOG_LEVEL: INFO
+      CORS_ORIGINS: '["http://localhost:5173","http://localhost:8080"]'
+      DATABASE_URL: "sqlite+aiosqlite:///./data/reviews.db"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api/app:/app/app:ro
+      - api_data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    build:
+      context: ./web
+      args:
+        # Empty -> client uses nginx /api/* proxy. Override for hosted builds.
+        VITE_API_BASE_URL: ""
+    image: apple-reviews-web:dev
+    container_name: apple-reviews-web
+    ports:
+      - "8080:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  api_data:
