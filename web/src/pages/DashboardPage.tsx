@@ -35,6 +35,13 @@ export function DashboardPage() {
     setSelectedReviewId(null);
   }, [appId, country]);
 
+  const sentimentByReviewId = useMemo(() => {
+    if (!insights.data) return undefined;
+    return new Map(
+      insights.data.insights.review_map.map((p) => [p.review_id, p.sentiment]),
+    );
+  }, [insights.data]);
+
   const selectedDetails = useMemo(() => {
     if (!selectedReviewId || !reviews.data || !insights.data) return null;
     const review = reviews.data.reviews.find((r) => r.id === selectedReviewId);
@@ -251,7 +258,10 @@ export function DashboardPage() {
                 <CardTitle>All reviews ({reviews.data.reviews.length})</CardTitle>
               </CardHeader>
               <CardContent>
-                <ReviewTable reviews={reviews.data.reviews} />
+                <ReviewTable
+                  reviews={reviews.data.reviews}
+                  sentimentByReviewId={sentimentByReviewId}
+                />
               </CardContent>
             </Card>
           )}

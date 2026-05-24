@@ -1,17 +1,48 @@
 import * as React from "react";
-import type { Review } from "../api/types";
+import type { Review, SentimentClass } from "../api/types";
+import { Badge } from "./ui/badge";
 
 interface Props {
   reviews: Review[];
+  sentimentByReviewId?: Map<string, SentimentClass>;
 }
 
-type SortKey = "rating" | "created_at";
+type SortKey = "rating" | "created_at" | "mismatch";
 
-export function ReviewTable({ reviews }: Props) {
+const SENTIMENT_LABEL: Record<SentimentClass, string> = {
+  very_negative: "Very Negative",
+  negative: "Negative",
+  neutral: "Neutral",
+  positive: "Positive",
+  very_positive: "Very Positive",
+};
+
+const SENTIMENT_TO_STAR: Record<SentimentClass, number> = {
+  very_negative: 1,
+  negative: 2,
+  neutral: 3,
+  positive: 4,
+  very_positive: 5,
+};
+
+function sentimentVariant(
+  s: SentimentClass,
+): "destructive" | "warning" | "secondary" | "success" {
+  if (s === "very_negative" || s === "negative") return "destructive";
+  if (s === "neutral") return "secondary";
+  return "success";
+}
+
+function mismatchDelta(rating: number, sentiment: SentimentClass): number {
+  return Math.abs(rating - SENTIMENT_TO_STAR[sentiment]);
+}
+
+export function ReviewTable({ reviews, sentimentByReviewId }: Props) {
   const [filter, setFilter] = React.useState("");
   const [sortBy, setSortBy] = React.useState<SortKey>("created_at");
   const [page, setPage] = React.useState(0);
   const pageSize = 10;
+  const hasSentiment = !!sentimentByReviewId && sentimentByReviewId.size > 0;
 
   const filtered = React.useMemo(() => {
     const f = filter.toLowerCase().trim();
@@ -26,6 +57,14 @@ export function ReviewTable({ reviews }: Props) {
     const sorted = [...base];
     if (sortBy === "rating") {
       sorted.sort((a, b) => b.rating - a.rating);
+    } else if (sortBy === "mismatch" && sentimentByReviewId) {
+      sorted.sort((a, b) => {
+        const sa = sentimentByReviewId.get(a.id);
+        const sb = sentimentByReviewId.get(b.id);
+        const da = sa ? mismatchDelta(a.rating, sa) : -1;
+        const db = sb ? mismatchDelta(b.rating, sb) : -1;
+        return db - da;
+      });
     } else {
       sorted.sort(
         (a, b) =>
@@ -33,7 +72,7 @@ export function ReviewTable({ reviews }: Props) {
       );
     }
     return sorted;
-  }, [reviews, filter, sortBy]);
+  }, [reviews, filter, sortBy, sentimentByReviewId]);
 
   const pages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const safePage = Math.min(page, pages - 1);
@@ -44,6 +83,20 @@ export function ReviewTable({ reviews }: Props) {
 
   return (
     <div className="space-y-3">
+      {hasSentiment && (
+        <p className="text-xs text-muted-foreground">
+          <span className="font-semibold text-foreground">User rating</span> is
+          the star count the reviewer clicked on the App Store.{" "}
+          <span className="font-semibold text-foreground">Our sentiment</span>{" "}
+          is what our NLP model predicts from the review text. A{" "}
+          <Badge variant="warning" className="mx-1 align-middle text-[10px]">
+            mismatch
+          </Badge>{" "}
+          badge appears when they disagree by 2+ levels (e.g. 5★ vs Very
+          Negative).
+        </p>
+      )}
+
       <div className="flex flex-wrap items-center gap-2">
         <input
           aria-label="Filter reviews"
@@ -63,6 +116,9 @@ export function ReviewTable({ reviews }: Props) {
         >
           <option value="created_at">Newest first</option>
           <option value="rating">Rating high → low</option>
+          {hasSentiment && (
+            <option value="mismatch">Rating-vs-sentiment mismatch</option>
+          )}
         </select>
       </div>
 
@@ -70,7 +126,14 @@ export function ReviewTable({ reviews }: Props) {
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
             <tr>
-              <th className="px-3 py-2">Rating</th>
+              <th className="px-3 py-2" title="From the App Store — what the reviewer clicked">
+                User rating
+              </th>
+              {hasSentiment && (
+                <th className="px-3 py-2" title="From our NLP model — predicted from the review text">
+                  Our sentiment
+                </th>
+              )}
               <th className="px-3 py-2">Title</th>
               <th className="px-3 py-2">Body</th>
               <th className="px-3 py-2">Author</th>
@@ -78,25 +141,52 @@ export function ReviewTable({ reviews }: Props) {
             </tr>
           </thead>
           <tbody>
-            {slice.map((r) => (
-              <tr key={r.id} className="border-t last:border-b-0">
-                <td className="px-3 py-2 align-top font-semibold">
-                  {r.rating}★
-                </td>
-                <td className="px-3 py-2 align-top font-medium">{r.title}</td>
-                <td className="px-3 py-2 align-top text-muted-foreground">
-                  <span className="line-clamp-3 block max-w-md">{r.body}</span>
-                </td>
-                <td className="px-3 py-2 align-top text-xs">{r.author}</td>
-                <td className="px-3 py-2 align-top text-xs text-muted-foreground">
-                  {new Date(r.created_at).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
+            {slice.map((r) => {
+              const sentiment = sentimentByReviewId?.get(r.id) ?? null;
+              const delta = sentiment ? mismatchDelta(r.rating, sentiment) : 0;
+              const isMismatch = sentiment && delta >= 2;
+              return (
+                <tr key={r.id} className="border-t last:border-b-0">
+                  <td className="px-3 py-2 align-top font-semibold">
+                    {r.rating}★
+                  </td>
+                  {hasSentiment && (
+                    <td className="px-3 py-2 align-top">
+                      {sentiment ? (
+                        <div className="flex flex-col items-start gap-1">
+                          <Badge variant={sentimentVariant(sentiment)}>
+                            {SENTIMENT_LABEL[sentiment]}
+                          </Badge>
+                          {isMismatch && (
+                            <Badge
+                              variant="warning"
+                              className="text-[10px]"
+                              title={`Star rating (${r.rating}★) and predicted sentiment differ by ${delta} levels`}
+                            >
+                              mismatch
+                            </Badge>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      )}
+                    </td>
+                  )}
+                  <td className="px-3 py-2 align-top font-medium">{r.title}</td>
+                  <td className="px-3 py-2 align-top text-muted-foreground">
+                    <span className="line-clamp-3 block max-w-md">{r.body}</span>
+                  </td>
+                  <td className="px-3 py-2 align-top text-xs">{r.author}</td>
+                  <td className="px-3 py-2 align-top text-xs text-muted-foreground">
+                    {new Date(r.created_at).toLocaleDateString()}
+                  </td>
+                </tr>
+              );
+            })}
             {slice.length === 0 && (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={hasSentiment ? 6 : 5}
                   className="px-3 py-6 text-center text-sm text-muted-foreground"
                 >
                   No reviews match the filter.
