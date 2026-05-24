@@ -11,17 +11,16 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-# VITE_API_BASE_URL is baked at build time. Default to relative path so nginx
-# can proxy /api -> the FastAPI service. Override at build for hosted setups.
 ARG VITE_API_BASE_URL=""
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 RUN pnpm build
 
-# ── Stage 2: serve via nginx ──────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS runtime
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-EXPOSE 80
+ENV API_UPSTREAM=""
+ENV NGINX_ENVSUBST_FILTER="API_UPSTREAM"
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
