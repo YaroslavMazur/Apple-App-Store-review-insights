@@ -8,6 +8,7 @@ import { rememberApp } from "../lib/recentApps";
 import { StageList } from "./StageList";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Select } from "./ui/select";
 
 const COUNTRY_OPTIONS: { code: string; label: string }[] = [
   { code: "us", label: "🇺🇸 United States" },
@@ -95,10 +96,9 @@ export function AppSearchForm() {
           <label htmlFor="country" className="mb-1.5 block text-sm font-medium">
             Country
           </label>
-          <select
+          <Select
             id="country"
             disabled={collect.isPending}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             {...form.register("country")}
           >
             {COUNTRY_OPTIONS.map((o) => (
@@ -106,7 +106,7 @@ export function AppSearchForm() {
                 {o.label}
               </option>
             ))}
-          </select>
+          </Select>
           {form.formState.errors.country && (
             <p className="mt-1 text-xs text-destructive">
               {form.formState.errors.country.message}

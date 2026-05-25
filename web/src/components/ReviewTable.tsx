@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Review, SentimentClass } from "../api/types";
 import { Badge } from "./ui/badge";
+import { Select } from "./ui/select";
 
 interface Props {
   reviews: Review[];
@@ -83,20 +84,6 @@ export function ReviewTable({ reviews, sentimentByReviewId }: Props) {
 
   return (
     <div className="space-y-3">
-      {hasSentiment && (
-        <p className="text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">User rating</span> is
-          the star count the reviewer clicked on the App Store.{" "}
-          <span className="font-semibold text-foreground">Our sentiment</span>{" "}
-          is what our NLP model predicts from the review text. A{" "}
-          <Badge variant="warning" className="mx-1 align-middle text-[10px]">
-            mismatch
-          </Badge>{" "}
-          badge appears when they disagree by 2+ levels (e.g. 5★ vs Very
-          Negative).
-        </p>
-      )}
-
       <div className="flex flex-wrap items-center gap-2">
         <input
           aria-label="Filter reviews"
@@ -108,18 +95,18 @@ export function ReviewTable({ reviews, sentimentByReviewId }: Props) {
           }}
           className="flex h-9 flex-1 min-w-[200px] rounded-md border border-input bg-background px-3 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
-        <select
+        <Select
           aria-label="Sort reviews"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortKey)}
-          className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+          className="h-9 w-auto py-0"
         >
           <option value="created_at">Newest first</option>
           <option value="rating">Rating high → low</option>
           {hasSentiment && (
             <option value="mismatch">Rating-vs-sentiment mismatch</option>
           )}
-        </select>
+        </Select>
       </div>
 
       <div className="overflow-x-auto rounded-md border">
