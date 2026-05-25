@@ -1,0 +1,36 @@
+{
+  "app_id": 324684580,
+  "country": "us",
+  "last_collected_at": "2026-05-25T14:39:15.179393Z",
+  "metrics": {
+    "total_reviews": 100,
+    "average_rating": 3.92,
+    "distribution": [
+      {
+        "rating": 1,
+        "count": 17,
+        "percentage": 17.0
+      },
+      {
+        "rating": 2,
+        "count": 7,
+        "percentage": 7.0
+      },
+      {
+        "rating": 3,
+        "count": 5,
+        "percentage": 5.0
+      },
+      {
+        "rating": 4,
+        "count": 9,
+        "percentage": 9.0
+      },
+      {
+        "rating": 5,
+        "count": 62,
+        "percentage": 62.0
+      }
+    ]
+  }
+}

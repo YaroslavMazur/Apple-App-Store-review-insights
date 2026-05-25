@@ -1,0 +1,1158 @@
+{
+  "app_id": 324684580,
+  "country": "us",
+  "collected_at": "2026-05-25T14:39:15.179393Z",
+  "review_count": 100,
+  "metrics": {
+    "total_reviews": 100,
+    "average_rating": 3.92,
+    "distribution": [
+      {
+        "rating": 1,
+        "count": 17,
+        "percentage": 17.0
+      },
+      {
+        "rating": 2,
+        "count": 7,
+        "percentage": 7.0
+      },
+      {
+        "rating": 3,
+        "count": 5,
+        "percentage": 5.0
+      },
+      {
+        "rating": 4,
+        "count": 9,
+        "percentage": 9.0
+      },
+      {
+        "rating": 5,
+        "count": 62,
+        "percentage": 62.0
+      }
+    ]
+  },
+  "insights": {
+    "sentiment_breakdown": {
+      "counts": {
+        "very_negative": 29,
+        "negative": 4,
+        "neutral": 7,
+        "positive": 11,
+        "very_positive": 49
+      },
+      "percentages": {
+        "very_negative": 29.0,
+        "negative": 4.0,
+        "neutral": 7.0,
+        "positive": 11.0,
+        "very_positive": 49.0
+      },
+      "total": 100
+    },
+    "themes": [
+      {
+        "id": 0,
+        "label": "spotify, song, music",
+        "keywords": [
+          "spotify",
+          "song",
+          "music",
+          "love",
+          "car"
+        ],
+        "review_ids": [
+          "14100473422",
+          "14100471895",
+          "14100469076",
+          "14100416808",
+          "14100362133",
+          "14100308194",
+          "14099723179",
+          "14099673858",
+          "14099572784",
+          "14099555714",
+          "14099509428",
+          "14099475899",
+          "14099460401",
+          "14099450977",
+          "14099324555",
+          "14099318584",
+          "14099181592",
+          "14099136333",
+          "14099095299"
+        ],
+        "total_reviews": 19,
+        "negative_count": 4,
+        "negative_share": 21.05,
+        "share_of_negatives": 12.12,
+        "average_rating": 4.42,
+        "is_pain_point": false
+      },
+      {
+        "id": 1,
+        "label": "cool, cool cool, excelente",
+        "keywords": [
+          "cool",
+          "cool cool",
+          "excelente",
+          "bad bunny",
+          "harrassin"
+        ],
+        "review_ids": [
+          "14100159459",
+          "14099958935",
+          "14099832762",
+          "14099765569",
+          "14099691162",
+          "14099635414",
+          "14099520834",
+          "14099446264",
+          "14099410470",
+          "14099293394",
+          "14099274540",
+          "14099232950",
+          "14099213468",
+          "14099212514",
+          "14099113113",
+          "14099107139",
+          "14099104055",
+          "14099094756",
+          "14099080867"
+        ],
+        "total_reviews": 19,
+        "negative_count": 3,
+        "negative_share": 15.79,
+        "share_of_negatives": 9.09,
+        "average_rating": 4.26,
+        "is_pain_point": false
+      },
+      {
+        "id": 2,
+        "label": "ads, premium, pay",
+        "keywords": [
+          "ads",
+          "premium",
+          "pay",
+          "reklam",
+          "premium ads"
+        ],
+        "review_ids": [
+          "14100411504",
+          "14100399557",
+          "14100254682",
+          "14100063079",
+          "14099871141",
+          "14099818886",
+          "14099705027",
+          "14099531824",
+          "14099430445",
+          "14099323517",
+          "14099232594",
+          "14099134108",
+          "14099099869",
+          "14099082363"
+        ],
+        "total_reviews": 14,
+        "negative_count": 11,
+        "negative_share": 78.57,
+        "share_of_negatives": 33.33,
+        "average_rating": 2.71,
+        "is_pain_point": true
+      },
+      {
+        "id": 3,
+        "label": "good, music, songs",
+        "keywords": [
+          "good",
+          "music",
+          "songs",
+          "great",
+          "love"
+        ],
+        "review_ids": [
+          "14100364306",
+          "14100180570",
+          "14100126526",
+          "14099591076",
+          "14099569040",
+          "14099429084",
+          "14099352362",
+          "14099277246",
+          "14099261364",
+          "14099237913",
+          "14099172523"
+        ],
+        "total_reviews": 11,
+        "negative_count": 0,
+        "negative_share": 0.0,
+        "share_of_negatives": 0.0,
+        "average_rating": 4.91,
+        "is_pain_point": false
+      },
+      {
+        "id": 4,
+        "label": "playlist, music, working",
+        "keywords": [
+          "playlist",
+          "music",
+          "working",
+          "work",
+          "button"
+        ],
+        "review_ids": [
+          "14100442719",
+          "14100351469",
+          "14099978024",
+          "14099534676",
+          "14099477092",
+          "14099368633",
+          "14099298298",
+          "14099231473",
+          "14099230801"
+        ],
+        "total_reviews": 9,
+        "negative_count": 6,
+        "negative_share": 66.67,
+        "share_of_negatives": 18.18,
+        "average_rating": 2.89,
+        "is_pain_point": true
+      },
+      {
+        "id": 5,
+        "label": "free, card, premium",
+        "keywords": [
+          "free",
+          "card",
+          "premium",
+          "forever",
+          "youtube"
+        ],
+        "review_ids": [
+          "14100461116",
+          "14100401705",
+          "14100319779",
+          "14100311228",
+          "14099719907",
+          "14099491931",
+          "14099275658",
+          "14099192912"
+        ],
+        "total_reviews": 8,
+        "negative_count": 4,
+        "negative_share": 50.0,
+        "share_of_negatives": 12.12,
+        "average_rating": 3.88,
+        "is_pain_point": true
+      },
+      {
+        "id": 6,
+        "label": "new, icon, logo",
+        "keywords": [
+          "new",
+          "icon",
+          "logo",
+          "new icon",
+          "app logo"
+        ],
+        "review_ids": [
+          "14100464362",
+          "14100366972",
+          "14099883961",
+          "14099843769",
+          "14099672582",
+          "14099275331"
+        ],
+        "total_reviews": 6,
+        "negative_count": 4,
+        "negative_share": 66.67,
+        "share_of_negatives": 12.12,
+        "average_rating": 2.67,
+        "is_pain_point": true
+      },
+      {
+        "id": 7,
+        "label": "ai, listening, best",
+        "keywords": [
+          "ai",
+          "listening",
+          "best",
+          "great listening",
+          "best best"
+        ],
+        "review_ids": [
+          "14100440937",
+          "14100240246",
+          "14100004645",
+          "14099341007",
+          "14099219227",
+          "14099204565"
+        ],
+        "total_reviews": 6,
+        "negative_count": 1,
+        "negative_share": 16.67,
+        "share_of_negatives": 3.03,
+        "average_rating": 3.83,
+        "is_pain_point": false
+      },
+      {
+        "id": 8,
+        "label": "app, app love, love",
+        "keywords": [
+          "app",
+          "app love",
+          "love",
+          "app general",
+          "app soulmate"
+        ],
+        "review_ids": [
+          "14099717740",
+          "14099628480",
+          "14099470432",
+          "14099265035",
+          "14099257224"
+        ],
+        "total_reviews": 5,
+        "negative_count": 0,
+        "negative_share": 0.0,
+        "share_of_negatives": 0.0,
+        "average_rating": 5.0,
+        "is_pain_point": false
+      }
+    ],
+    "insights": [
+      {
+        "title": "ads, premium, pay",
+        "severity": "high",
+        "evidence_count": 11,
+        "theme_id": 2,
+        "suggestion": "Investigate complaints around ads, premium, pay — 11/14 reviews in this theme are negative (79%), avg rating 2.7 stars."
+      },
+      {
+        "title": "playlist, music, working",
+        "severity": "medium",
+        "evidence_count": 6,
+        "theme_id": 4,
+        "suggestion": "Investigate complaints around playlist, music, working — 6/9 reviews in this theme are negative (67%), avg rating 2.9 stars."
+      },
+      {
+        "title": "free, card, premium",
+        "severity": "low",
+        "evidence_count": 4,
+        "theme_id": 5,
+        "suggestion": "Investigate complaints around free, card, premium — 4/8 reviews in this theme are negative (50%), avg rating 3.9 stars."
+      },
+      {
+        "title": "new, icon, logo",
+        "severity": "medium",
+        "evidence_count": 4,
+        "theme_id": 6,
+        "suggestion": "Investigate complaints around new, icon, logo — 4/6 reviews in this theme are negative (67%), avg rating 2.7 stars."
+      }
+    ],
+    "review_map": [
+      {
+        "review_id": "14100473422",
+        "x": 2.3928158283233643,
+        "y": 2.339494466781616,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100471895",
+        "x": 1.9424352645874023,
+        "y": 1.8820176124572754,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100469076",
+        "x": 1.7466713190078735,
+        "y": 1.8821460008621216,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100464362",
+        "x": 1.4684232473373413,
+        "y": 3.448223114013672,
+        "sentiment": "very_negative",
+        "rating": 3,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14100461116",
+        "x": 0.2906070351600647,
+        "y": 2.9357986450195312,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14100442719",
+        "x": -0.37156301736831665,
+        "y": 1.2722560167312622,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14100440937",
+        "x": -0.6576870679855347,
+        "y": 3.7428510189056396,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14100416808",
+        "x": 2.0134785175323486,
+        "y": 2.029841661453247,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100411504",
+        "x": 1.4903311729431152,
+        "y": -0.6831874251365662,
+        "sentiment": "negative",
+        "rating": 4,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14100401705",
+        "x": 0.6455435156822205,
+        "y": 1.7258274555206299,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14100399557",
+        "x": 1.6629419326782227,
+        "y": -0.825256884098053,
+        "sentiment": "negative",
+        "rating": 1,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14100366972",
+        "x": 1.5194871425628662,
+        "y": 3.5366218090057373,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14100364306",
+        "x": -1.3316516876220703,
+        "y": 1.5168912410736084,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14100362133",
+        "x": 1.962707281112671,
+        "y": 2.670478343963623,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100351469",
+        "x": -0.5059000849723816,
+        "y": 1.105717658996582,
+        "sentiment": "positive",
+        "rating": 4,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14100319779",
+        "x": -0.5271195769309998,
+        "y": 2.2354214191436768,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14100311228",
+        "x": 0.41005682945251465,
+        "y": 2.052396297454834,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14100308194",
+        "x": 1.9762418270111084,
+        "y": 2.0182580947875977,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14100254682",
+        "x": 1.3700438737869263,
+        "y": -0.5285325646400452,
+        "sentiment": "negative",
+        "rating": 2,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14100240246",
+        "x": -0.5925136208534241,
+        "y": 3.642504930496216,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14100180570",
+        "x": -1.1358497142791748,
+        "y": 1.5543934106826782,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14100159459",
+        "x": -2.8748767375946045,
+        "y": 2.730543851852417,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14100126526",
+        "x": -1.619589924812317,
+        "y": 1.3381847143173218,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14100063079",
+        "x": 1.5650378465652466,
+        "y": -0.5061188340187073,
+        "sentiment": "very_negative",
+        "rating": 4,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14100004645",
+        "x": -0.18940798938274384,
+        "y": 3.34828519821167,
+        "sentiment": "neutral",
+        "rating": 2,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14099978024",
+        "x": -0.0786118283867836,
+        "y": 0.9850166440010071,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099958935",
+        "x": -2.7408511638641357,
+        "y": 2.9819557666778564,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099883961",
+        "x": 1.5531021356582642,
+        "y": 3.479898452758789,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14099871141",
+        "x": 1.0478520393371582,
+        "y": -0.6821295619010925,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099843769",
+        "x": 1.3164973258972168,
+        "y": 3.5627691745758057,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14099832762",
+        "x": -2.522101640701294,
+        "y": 3.117727279663086,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099818886",
+        "x": 1.2644925117492676,
+        "y": -0.443229079246521,
+        "sentiment": "very_negative",
+        "rating": 3,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099789966",
+        "x": -0.535959780216217,
+        "y": 3.13771390914917,
+        "sentiment": "positive",
+        "rating": 4,
+        "topic_id": null
+      },
+      {
+        "review_id": "14099765569",
+        "x": -3.189042806625366,
+        "y": 3.2584340572357178,
+        "sentiment": "very_negative",
+        "rating": 4,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099723179",
+        "x": 2.3317689895629883,
+        "y": 2.0162911415100098,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099719907",
+        "x": -0.03908472880721092,
+        "y": 2.840217351913452,
+        "sentiment": "very_negative",
+        "rating": 4,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14099717740",
+        "x": -1.084225058555603,
+        "y": 3.8951308727264404,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 8
+      },
+      {
+        "review_id": "14099705027",
+        "x": 0.8275064826011658,
+        "y": 0.039057739078998566,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099691162",
+        "x": -2.1116631031036377,
+        "y": 2.6393442153930664,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099673858",
+        "x": 1.4743188619613647,
+        "y": 1.903053879737854,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099672582",
+        "x": 1.7424477338790894,
+        "y": 3.218757152557373,
+        "sentiment": "very_positive",
+        "rating": 1,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14099652981",
+        "x": -0.8953387141227722,
+        "y": 3.5293686389923096,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": null
+      },
+      {
+        "review_id": "14099635414",
+        "x": -2.2345359325408936,
+        "y": 3.614149332046509,
+        "sentiment": "neutral",
+        "rating": 4,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099628480",
+        "x": -0.8999855518341064,
+        "y": 3.99288272857666,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 8
+      },
+      {
+        "review_id": "14099591076",
+        "x": -1.2073434591293335,
+        "y": 1.342612862586975,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099587557",
+        "x": -0.7605145573616028,
+        "y": 3.3521130084991455,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": null
+      },
+      {
+        "review_id": "14099572784",
+        "x": 1.811949610710144,
+        "y": 1.4606646299362183,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099569040",
+        "x": -1.2434031963348389,
+        "y": 1.115118145942688,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099555714",
+        "x": 1.5352060794830322,
+        "y": 1.5380996465682983,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099534676",
+        "x": 0.10531236231327057,
+        "y": 1.128798246383667,
+        "sentiment": "very_negative",
+        "rating": 3,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099531824",
+        "x": 1.137795329093933,
+        "y": -0.7390705347061157,
+        "sentiment": "neutral",
+        "rating": 3,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099520834",
+        "x": -2.869441509246826,
+        "y": 3.545363187789917,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099509428",
+        "x": 1.4595032930374146,
+        "y": 2.1671547889709473,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099491931",
+        "x": -0.31377115845680237,
+        "y": 2.2294790744781494,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14099477092",
+        "x": -0.6775909662246704,
+        "y": 0.9482340216636658,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099475899",
+        "x": 1.6806130409240723,
+        "y": 1.9637140035629272,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099470432",
+        "x": -0.8732612729072571,
+        "y": 4.069715976715088,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 8
+      },
+      {
+        "review_id": "14099460401",
+        "x": 1.9661768674850464,
+        "y": 1.6700903177261353,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099450977",
+        "x": 2.130209445953369,
+        "y": 1.50291109085083,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099446264",
+        "x": -2.54299259185791,
+        "y": 3.245875835418701,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099430445",
+        "x": 1.6647340059280396,
+        "y": 0.09293926507234573,
+        "sentiment": "very_negative",
+        "rating": 3,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099429084",
+        "x": -1.414902687072754,
+        "y": 1.6439627408981323,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099410470",
+        "x": -2.4093592166900635,
+        "y": 2.79099702835083,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099368633",
+        "x": -0.15563535690307617,
+        "y": 0.7114577889442444,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099352362",
+        "x": -1.6029239892959595,
+        "y": 1.1092818975448608,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099341007",
+        "x": -0.47075656056404114,
+        "y": 3.563366651535034,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14099324555",
+        "x": 2.5590145587921143,
+        "y": 1.8431764841079712,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099323517",
+        "x": 0.8544105887413025,
+        "y": -0.30634212493896484,
+        "sentiment": "neutral",
+        "rating": 2,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099318584",
+        "x": 2.1986491680145264,
+        "y": 2.2503135204315186,
+        "sentiment": "very_negative",
+        "rating": 2,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099298298",
+        "x": 0.26994529366493225,
+        "y": 0.7826002240180969,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099293394",
+        "x": -2.9391214847564697,
+        "y": 2.821399450302124,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099277246",
+        "x": -1.170876383781433,
+        "y": 0.8849822282791138,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099275658",
+        "x": 0.21025678515434265,
+        "y": 2.1792843341827393,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14099275331",
+        "x": 1.1614422798156738,
+        "y": 3.725691795349121,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 6
+      },
+      {
+        "review_id": "14099274540",
+        "x": -3.164001226425171,
+        "y": 3.05062198638916,
+        "sentiment": "neutral",
+        "rating": 1,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099265035",
+        "x": -0.9622777104377747,
+        "y": 3.971959352493286,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 8
+      },
+      {
+        "review_id": "14099261364",
+        "x": -1.5133521556854248,
+        "y": 0.9245156049728394,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099257224",
+        "x": -0.6551633477210999,
+        "y": 4.0045342445373535,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 8
+      },
+      {
+        "review_id": "14099237913",
+        "x": -1.6140981912612915,
+        "y": 1.8215820789337158,
+        "sentiment": "positive",
+        "rating": 4,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099232950",
+        "x": -2.003612518310547,
+        "y": 2.585550546646118,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099232594",
+        "x": 1.8202340602874756,
+        "y": -0.14270129799842834,
+        "sentiment": "very_negative",
+        "rating": 4,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099231473",
+        "x": -0.26303887367248535,
+        "y": 1.5588291883468628,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099230801",
+        "x": 0.1809995025396347,
+        "y": 1.068157434463501,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 4
+      },
+      {
+        "review_id": "14099219227",
+        "x": -0.41338256001472473,
+        "y": 3.4378786087036133,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14099213468",
+        "x": -2.768982172012329,
+        "y": 2.5761935710906982,
+        "sentiment": "neutral",
+        "rating": 1,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099212514",
+        "x": -2.470937728881836,
+        "y": 3.1575143337249756,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099204565",
+        "x": -0.011811784468591213,
+        "y": 3.522273302078247,
+        "sentiment": "very_negative",
+        "rating": 1,
+        "topic_id": 7
+      },
+      {
+        "review_id": "14099192912",
+        "x": -0.08400842547416687,
+        "y": 2.495145082473755,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 5
+      },
+      {
+        "review_id": "14099181592",
+        "x": 1.4988442659378052,
+        "y": 2.2625560760498047,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099172523",
+        "x": -1.6821266412734985,
+        "y": 1.5129061937332153,
+        "sentiment": "positive",
+        "rating": 5,
+        "topic_id": 3
+      },
+      {
+        "review_id": "14099136333",
+        "x": 2.2001781463623047,
+        "y": 1.832613468170166,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099134108",
+        "x": 1.4960877895355225,
+        "y": -0.6462594866752625,
+        "sentiment": "very_negative",
+        "rating": 2,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099113113",
+        "x": -2.6924185752868652,
+        "y": 3.481375217437744,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099107139",
+        "x": -2.410330057144165,
+        "y": 3.433210611343384,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099104055",
+        "x": -2.916104555130005,
+        "y": 3.6877830028533936,
+        "sentiment": "very_negative",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099099869",
+        "x": 1.2683894634246826,
+        "y": -0.281097948551178,
+        "sentiment": "neutral",
+        "rating": 2,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099095299",
+        "x": 1.8220659494400024,
+        "y": 1.6573225259780884,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 0
+      },
+      {
+        "review_id": "14099094756",
+        "x": -2.2633790969848633,
+        "y": 3.159470558166504,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      },
+      {
+        "review_id": "14099082363",
+        "x": 1.19199538230896,
+        "y": -0.8006495833396912,
+        "sentiment": "negative",
+        "rating": 2,
+        "topic_id": 2
+      },
+      {
+        "review_id": "14099080867",
+        "x": -2.2802090644836426,
+        "y": 2.0831689834594727,
+        "sentiment": "very_positive",
+        "rating": 5,
+        "topic_id": 1
+      }
+    ]
+  }
+}
