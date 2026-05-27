@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import io
 import json
+import random
 import time
 from collections.abc import AsyncIterator
 from typing import Annotated, Any, Literal
@@ -24,7 +25,7 @@ from app.models.schemas import (
     MetricsResponse,
     RawReviewsResponse,
 )
-from app.services.fetcher import fetch_reviews
+from app.services.fetcher import fetch_all_reviews
 from app.services.insights import (
     build_review_map,
     classify_sentiments,
@@ -58,7 +59,8 @@ async def collect(
     country = request.country.lower()
     logger.info("api.collect.start", app_id=request.app_id, country=country, limit=request.limit)
 
-    reviews = await fetch_reviews(app_id=request.app_id, country=country, limit=request.limit)
+    all_reviews = await fetch_all_reviews(app_id=request.app_id, country=country)
+    reviews = _sample_reviews(all_reviews, request.limit)
 
     metrics = compute_metrics(reviews)
     # CPU-bound; run off the event loop.
@@ -114,9 +116,7 @@ async def _collect_pipeline_events(
 
     def start(stage_id: str, label: str) -> bytes:
         started_at[stage_id] = time.monotonic()
-        return _event(
-            {"type": "stage", "id": stage_id, "state": "started", "label": label}
-        )
+        return _event({"type": "stage", "id": stage_id, "state": "started", "label": label})
 
     def done(stage_id: str, detail: str | None = None) -> bytes:
         duration_ms = int((time.monotonic() - started_at.pop(stage_id, time.monotonic())) * 1000)
@@ -131,11 +131,18 @@ async def _collect_pipeline_events(
         return _event(payload)
 
     try:
-        yield start("fetch", "Fetching reviews from the App Store")
-        reviews = await fetch_reviews(
-            app_id=request.app_id, country=country, limit=request.limit
+        yield start("fetch", "Fetching every available review from the App Store")
+        all_reviews = await fetch_all_reviews(app_id=request.app_id, country=country)
+        yield done("fetch", detail=f"{len(all_reviews)} reviews available")
+
+        yield start("sample", f"Randomly sampling up to {request.limit} reviews")
+        reviews = _sample_reviews(all_reviews, request.limit)
+        sample_detail = (
+            f"{len(reviews)} sampled from {len(all_reviews)}"
+            if len(reviews) < len(all_reviews)
+            else f"{len(reviews)} reviews (no sampling needed)"
         )
-        yield done("fetch", detail=f"{len(reviews)} reviews")
+        yield done("sample", detail=sample_detail)
 
         yield start("metrics", "Computing rating metrics")
         metrics = compute_metrics(reviews)
@@ -144,9 +151,8 @@ async def _collect_pipeline_events(
         yield start("sentiment", "Classifying sentiment with multilingual DistilBERT")
         classifications = await anyio.to_thread.run_sync(classify_sentiments, reviews)
         breakdown = compute_sentiment_breakdown(classifications)
-        n_neg = (
-            breakdown.counts.get(SentimentClass.NEGATIVE, 0)
-            + breakdown.counts.get(SentimentClass.VERY_NEGATIVE, 0)
+        n_neg = breakdown.counts.get(SentimentClass.NEGATIVE, 0) + breakdown.counts.get(
+            SentimentClass.VERY_NEGATIVE, 0
         )
         yield done("sentiment", detail=f"{n_neg} negative reviews")
 
@@ -177,9 +183,7 @@ async def _collect_pipeline_events(
         yield start("persist", "Saving to database")
         await repo.save_reviews(reviews)
         await repo.save_insights(request.app_id, country, report)
-        collected_at = await repo.record_collection(
-            request.app_id, country, len(reviews)
-        )
+        collected_at = await repo.record_collection(request.app_id, country, len(reviews))
         yield done("persist")
 
         response = CollectResponse(
@@ -294,6 +298,13 @@ async def get_raw(
         last_collected_at=collection["last_collected_at"],
         reviews=reviews,
     )
+
+
+def _sample_reviews(reviews: list[Review], sample_size: int) -> list[Review]:
+    """Return a random sample of up to `sample_size` reviews (or all if fewer exist)."""
+    if sample_size >= len(reviews):
+        return reviews
+    return random.sample(reviews, sample_size)
 
 
 def _reviews_to_csv(app_id: int, country: str, reviews: list[Review]) -> StreamingResponse:

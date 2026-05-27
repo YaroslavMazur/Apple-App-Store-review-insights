@@ -23,8 +23,12 @@ class CollectRequest(BaseModel):
     limit: int = Field(
         default=100,
         ge=1,
-        le=2000,
-        description="Max reviews to fetch (1..2000; appstorescraperpy aggregates across iPhone/iPad/Mac/AppleTV)",
+        le=5000,
+        description=(
+            "Random sample size: the API always fetches every available review from "
+            "the App Store, then picks this many uniformly at random for metrics + NLP "
+            "analysis. If the app has fewer reviews than this, all are used."
+        ),
     )
 
 

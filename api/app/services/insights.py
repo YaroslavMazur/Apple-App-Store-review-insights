@@ -223,9 +223,7 @@ def cluster_all_reviews(
     if not members:
         return [], {}
 
-    total_negatives = sum(
-        1 for r in reviews if classifications.get(r.id) in NEGATIVE_CLASSES
-    )
+    total_negatives = sum(1 for r in reviews if classifications.get(r.id) in NEGATIVE_CLASSES)
 
     themes: list[Theme] = []
     for topic_id, members_in_topic in members.items():
@@ -236,9 +234,7 @@ def cluster_all_reviews(
         )
         size = len(members_in_topic)
         neg_share = round(neg_count / size * 100, 2) if size else 0.0
-        share_of_negatives = (
-            round(neg_count / total_negatives * 100, 2) if total_negatives else 0.0
-        )
+        share_of_negatives = round(neg_count / total_negatives * 100, 2) if total_negatives else 0.0
         avg_rating = sum(r.rating for r in members_in_topic) / size
         themes.append(
             Theme(
@@ -277,9 +273,7 @@ def _format_label(keywords: list[str]) -> str:
 
 def derive_actionable_insights(themes: Sequence[Theme]) -> list[Insight]:
     """Pick up to 5 pain-point themes (>=50% negative, >=3 negative reviews)."""
-    pain_points = [
-        t for t in themes if t.is_pain_point and t.negative_count >= 3
-    ]
+    pain_points = [t for t in themes if t.is_pain_point and t.negative_count >= 3]
     ranked = sorted(pain_points, key=lambda t: t.negative_count, reverse=True)[:5]
     insights: list[Insight] = []
     for theme in ranked:
@@ -347,9 +341,7 @@ def compute_insights_report(reviews: Iterable[Review]) -> InsightsReport:
 
     embeddings = embed_all(reviews_list)
     coords_2d = reduce_to_2d(embeddings)
-    themes, review_to_topic = cluster_all_reviews(
-        reviews_list, classifications, coords_2d
-    )
+    themes, review_to_topic = cluster_all_reviews(reviews_list, classifications, coords_2d)
     review_map = build_review_map(reviews_list, classifications, coords_2d, review_to_topic)
     insights = derive_actionable_insights(themes)
     return InsightsReport(

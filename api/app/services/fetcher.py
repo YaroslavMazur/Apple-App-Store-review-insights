@@ -18,8 +18,6 @@ from app.models.domain import Review
 
 logger = get_logger("fetcher")
 
-MAX_LIMIT = 2000
-
 
 class _ReviewLike(Protocol):
     @property
@@ -38,25 +36,19 @@ class _ReviewLike(Protocol):
     def is_edited(self) -> bool: ...
 
 
-async def fetch_reviews(
-    app_id: int,
-    country: str,
-    limit: int = 100,
-) -> list[Review]:
+async def fetch_all_reviews(app_id: int, country: str) -> list[Review]:
     """
-    Fetch up to `limit` recent reviews for the given App Store app.
+    Fetch every available review for the given App Store app.
 
-    Args:
-        app_id: numeric Apple app id (e.g. 324684580 for Spotify).
-        country: ISO-3166-1 alpha-2 country code (lowercase or uppercase).
-        limit: max reviews to retrieve, 1..500.
+    appstorescraperpy paginates internally — passing count=None makes it
+    loop until the upstream "next offset" link is gone.
 
     Raises:
         InvalidInputError: validation failure on inputs.
         AppNotFoundError: app has no reviews / no reviews available for country.
         UpstreamUnavailableError: App Store request failed after retries.
     """
-    _validate_inputs(app_id, country, limit)
+    _validate_inputs(app_id, country)
     country_norm = country.lower()
 
     raw_reviews: list[_ReviewLike] = []
@@ -67,7 +59,7 @@ async def fetch_reviews(
         reraise=True,
     ):
         with attempt:
-            raw_reviews = await anyio.to_thread.run_sync(_scrape_sync, app_id, country_norm, limit)
+            raw_reviews = await anyio.to_thread.run_sync(_scrape_all_sync, app_id, country_norm)
 
     if not raw_reviews:
         raise AppNotFoundError(
@@ -84,19 +76,18 @@ async def fetch_reviews(
     return [_normalize(r, app_id=app_id, country=country_norm) for r in raw_reviews]
 
 
-def _validate_inputs(app_id: int, country: str, limit: int) -> None:
+def _validate_inputs(app_id: int, country: str) -> None:
     if not isinstance(app_id, int) or app_id <= 0:
         raise InvalidInputError("app_id must be a positive integer")
     if len(country) != 2 or not country.isalpha():
         raise InvalidInputError("country must be a 2-letter ISO code")
-    if not (1 <= limit <= MAX_LIMIT):
-        raise InvalidInputError(f"limit must be between 1 and {MAX_LIMIT}")
 
 
-def _scrape_sync(app_id: int, country: str, limit: int) -> list[_ReviewLike]:
+def _scrape_all_sync(app_id: int, country: str) -> list[_ReviewLike]:
     try:
         app = appstorescraper.get_app(app_id=app_id, country=country)
-        reviews, _next_offset = app.get_reviews(count=limit, offset=0)
+        # count=None tells appstorescraperpy to paginate until upstream is empty.
+        reviews, _next_offset = app.get_reviews(count=None, offset=0)
     except Exception as exc:
         raise UpstreamUnavailableError(
             f"App Store fetch failed: {exc}",

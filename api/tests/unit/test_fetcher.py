@@ -11,7 +11,7 @@ import pytest
 
 from app.exceptions import AppNotFoundError, InvalidInputError, UpstreamUnavailableError
 from app.models.domain import Review
-from app.services.fetcher import fetch_reviews
+from app.services.fetcher import fetch_all_reviews
 
 FIXTURE = Path(__file__).parent.parent / "fixtures" / "sample_reviews.json"
 
@@ -52,14 +52,18 @@ def _make_get_app(reviews: list[FakeReview], next_offset: int | None = None) -> 
     return MagicMock(return_value=app)
 
 
-async def test_fetch_reviews_happy_path() -> None:
+async def test_fetch_all_reviews_happy_path() -> None:
     reviews = _load_fixture()
     get_app = _make_get_app(reviews)
 
     with patch("app.services.fetcher.appstorescraper.get_app", get_app):
-        result = await fetch_reviews(app_id=324684580, country="us", limit=10)
+        result = await fetch_all_reviews(app_id=324684580, country="us")
 
     get_app.assert_called_once_with(app_id=324684580, country="us")
+    # appstorescraperpy must be called with count=None so it paginates exhaustively.
+    app_obj = get_app.return_value
+    app_obj.get_reviews.assert_called_once_with(count=None, offset=0)
+
     assert len(result) == 5
     assert all(isinstance(r, Review) for r in result)
 
@@ -78,11 +82,11 @@ async def test_fetch_reviews_happy_path() -> None:
     assert edited.rating == 1
 
 
-async def test_fetch_reviews_uses_real_apple_id() -> None:
+async def test_fetch_all_reviews_uses_real_apple_id() -> None:
     """Review.id should be the real Apple-assigned id, not synthesized."""
     reviews = _load_fixture()
     with patch("app.services.fetcher.appstorescraper.get_app", _make_get_app(reviews)):
-        result = await fetch_reviews(app_id=324684580, country="us")
+        result = await fetch_all_reviews(app_id=324684580, country="us")
 
     assert [r.id for r in result] == [
         "11234567890",
@@ -93,7 +97,7 @@ async def test_fetch_reviews_uses_real_apple_id() -> None:
     ]
 
 
-async def test_fetch_reviews_normalizes_missing_author_and_title() -> None:
+async def test_fetch_all_reviews_normalizes_missing_author_and_title() -> None:
     fake = [
         FakeReview(
             id="x",
@@ -106,47 +110,40 @@ async def test_fetch_reviews_normalizes_missing_author_and_title() -> None:
         )
     ]
     with patch("app.services.fetcher.appstorescraper.get_app", _make_get_app(fake)):
-        result = await fetch_reviews(app_id=1, country="us")
+        result = await fetch_all_reviews(app_id=1, country="us")
 
     assert result[0].author == "anonymous"
     assert result[0].title == ""
 
 
-async def test_fetch_reviews_normalizes_country_to_lowercase() -> None:
+async def test_fetch_all_reviews_normalizes_country_to_lowercase() -> None:
     with patch("app.services.fetcher.appstorescraper.get_app", _make_get_app(_load_fixture())) as m:
-        result = await fetch_reviews(app_id=1, country="US")
+        result = await fetch_all_reviews(app_id=1, country="US")
     m.assert_called_once_with(app_id=1, country="us")
     assert all(r.country == "us" for r in result)
 
 
-async def test_fetch_reviews_empty_raises_app_not_found() -> None:
+async def test_fetch_all_reviews_empty_raises_app_not_found() -> None:
     with (
         patch("app.services.fetcher.appstorescraper.get_app", _make_get_app([])),
         pytest.raises(AppNotFoundError),
     ):
-        await fetch_reviews(app_id=999999999, country="us")
+        await fetch_all_reviews(app_id=999999999, country="us")
 
 
-async def test_fetch_reviews_invalid_country() -> None:
+async def test_fetch_all_reviews_invalid_country() -> None:
     with pytest.raises(InvalidInputError, match="country"):
-        await fetch_reviews(app_id=1, country="USA")
+        await fetch_all_reviews(app_id=1, country="USA")
 
 
-async def test_fetch_reviews_invalid_app_id() -> None:
+async def test_fetch_all_reviews_invalid_app_id() -> None:
     with pytest.raises(InvalidInputError, match="app_id"):
-        await fetch_reviews(app_id=0, country="us")
+        await fetch_all_reviews(app_id=0, country="us")
     with pytest.raises(InvalidInputError, match="app_id"):
-        await fetch_reviews(app_id=-5, country="us")
+        await fetch_all_reviews(app_id=-5, country="us")
 
 
-async def test_fetch_reviews_invalid_limit() -> None:
-    with pytest.raises(InvalidInputError, match="limit"):
-        await fetch_reviews(app_id=1, country="us", limit=0)
-    with pytest.raises(InvalidInputError, match="limit"):
-        await fetch_reviews(app_id=1, country="us", limit=10_000)
-
-
-async def test_fetch_reviews_retries_then_succeeds() -> None:
+async def test_fetch_all_reviews_retries_then_succeeds() -> None:
     """get_app raises twice, succeeds on third attempt — tenacity should retry."""
     reviews = _load_fixture()
     success_app = MagicMock()
@@ -161,13 +158,13 @@ async def test_fetch_reviews_retries_then_succeeds() -> None:
         return success_app
 
     with patch("app.services.fetcher.appstorescraper.get_app", side_effect=factory):
-        result = await fetch_reviews(app_id=1, country="us")
+        result = await fetch_all_reviews(app_id=1, country="us")
 
     assert call_count["n"] == 3
     assert len(result) == 5
 
 
-async def test_fetch_reviews_gives_up_after_max_retries() -> None:
+async def test_fetch_all_reviews_gives_up_after_max_retries() -> None:
     def factory(*args: Any, **kwargs: Any) -> MagicMock:
         raise RuntimeError("persistent upstream failure")
 
@@ -175,4 +172,4 @@ async def test_fetch_reviews_gives_up_after_max_retries() -> None:
         patch("app.services.fetcher.appstorescraper.get_app", side_effect=factory),
         pytest.raises(UpstreamUnavailableError),
     ):
-        await fetch_reviews(app_id=1, country="us")
+        await fetch_all_reviews(app_id=1, country="us")

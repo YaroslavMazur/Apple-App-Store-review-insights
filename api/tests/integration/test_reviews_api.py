@@ -27,7 +27,7 @@ def _review(rating: int, idx: int) -> Review:
         body=f"body {idx}",
         rating=rating,
         author=f"author{idx}",
-        created_at=datetime(2025, 1, idx + 1, tzinfo=UTC),
+        created_at=datetime(2025, 1, (idx % 28) + 1, tzinfo=UTC),
         is_edited=False,
     )
 
@@ -87,7 +87,7 @@ def mocked_pipeline(sample_reviews: list[Review]):
     """Patch fetcher + insights so no live App Store / model load happens in tests."""
     with (
         patch(
-            "app.api.v1.reviews.fetch_reviews",
+            "app.api.v1.reviews.fetch_all_reviews",
             new=AsyncMock(return_value=sample_reviews),
         ) as mock_fetch,
         patch(
@@ -137,6 +137,41 @@ def test_collect_normalizes_country_to_lowercase(
     response = client.post("/api/v1/reviews/collect", json={"app_id": 1, "country": "US"})
     assert response.status_code == 200
     assert response.json()["country"] == "us"
+
+
+def test_collect_samples_when_limit_below_corpus(client: TestClient) -> None:
+    """`limit` is now a sample size: fetcher returns N, analysis uses min(limit, N)."""
+    corpus = [_review((i % 5) + 1, i) for i in range(50)]
+    with (
+        patch(
+            "app.api.v1.reviews.fetch_all_reviews",
+            new=AsyncMock(return_value=corpus),
+        ),
+        patch(
+            "app.api.v1.reviews.compute_insights_report",
+            return_value=_fake_report(),
+        ),
+    ):
+        response = client.post(
+            "/api/v1/reviews/collect",
+            json={"app_id": 1, "country": "us", "limit": 10},
+        )
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["review_count"] == 10
+    assert body["metrics"]["total_reviews"] == 10
+
+
+def test_collect_uses_all_when_corpus_smaller_than_limit(
+    client: TestClient, mocked_pipeline: tuple, sample_reviews: list[Review]
+) -> None:
+    """If the app has fewer reviews than `limit`, all are analyzed."""
+    response = client.post(
+        "/api/v1/reviews/collect",
+        json={"app_id": 1, "country": "us", "limit": 1000},
+    )
+    assert response.status_code == 200
+    assert response.json()["review_count"] == len(sample_reviews)
 
 
 # ── /metrics ──────────────────────────────────────────────────────────────────

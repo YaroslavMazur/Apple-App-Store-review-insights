@@ -13,16 +13,23 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import random
 import sys
 from collections import Counter
 
-from app.services.fetcher import fetch_reviews
+from app.services.fetcher import fetch_all_reviews
 
 
 async def main(app_id: int, country: str, limit: int) -> int:
-    print(f"Fetching up to {limit} reviews for app_id={app_id}, country={country!r}…")
-    reviews = await fetch_reviews(app_id=app_id, country=country, limit=limit)
-    print(f"✓ Got {len(reviews)} reviews\n")
+    print(f"Fetching every available review for app_id={app_id}, country={country!r}…")
+    all_reviews = await fetch_all_reviews(app_id=app_id, country=country)
+    print(f"✓ Got {len(all_reviews)} total reviews available")
+    if limit < len(all_reviews):
+        reviews = random.sample(all_reviews, limit)
+        print(f"✓ Randomly sampled {len(reviews)} for the smoke summary\n")
+    else:
+        reviews = all_reviews
+        print()
 
     if not reviews:
         print("✗ No reviews returned.")

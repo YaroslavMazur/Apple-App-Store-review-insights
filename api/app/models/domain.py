@@ -89,7 +89,9 @@ class Theme(BaseModel):
     keywords: list[str]
     review_ids: list[str]
     total_reviews: int = Field(ge=0)
-    negative_count: int = Field(ge=0, description="Reviews in this theme that are negative or very negative")
+    negative_count: int = Field(
+        ge=0, description="Reviews in this theme that are negative or very negative"
+    )
     negative_share: float = Field(
         ge=0.0,
         le=100.0,

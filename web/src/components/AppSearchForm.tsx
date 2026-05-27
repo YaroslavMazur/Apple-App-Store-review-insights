@@ -38,7 +38,7 @@ const schema = z.object({
     .int()
     .positive("App ID must be a positive integer"),
   country: z.enum(COUNTRY_CODES, { message: "Pick a country" }),
-  limit: z.coerce.number().int().min(1).max(2000).default(100),
+  limit: z.coerce.number().int().min(1).max(5000).default(100),
 });
 
 type FormValues = z.input<typeof schema>;
@@ -114,18 +114,21 @@ export function AppSearchForm() {
           )}
         </div>
 
-        <div className="w-full sm:w-28">
+        <div className="w-full sm:w-32">
           <label htmlFor="limit" className="mb-1.5 block text-sm font-medium">
-            Reviews
+            Sample size
           </label>
           <Input
             id="limit"
             type="number"
             min={1}
-            max={2000}
+            max={5000}
             disabled={collect.isPending}
             {...form.register("limit")}
           />
+          <p className="mt-1 text-xs text-muted-foreground">
+            Random reviews to analyze
+          </p>
         </div>
 
         <Button

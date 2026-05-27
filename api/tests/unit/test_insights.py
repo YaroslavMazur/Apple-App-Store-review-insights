@@ -165,9 +165,7 @@ def test_cluster_builds_themes_with_sentiment_breakdown() -> None:
         patch("app.services.insights._get_embedding_model", return_value=MagicMock()),
         patch("bertopic.BERTopic", return_value=fake_topic_model),
     ):
-        themes, review_to_topic = svc.cluster_all_reviews(
-            reviews, classifications, coords_2d
-        )
+        themes, review_to_topic = svc.cluster_all_reviews(reviews, classifications, coords_2d)
 
     assert len(themes) == 2
     by_id = {t.id: t for t in themes}
@@ -204,9 +202,7 @@ def test_cluster_handles_bertopic_failure_gracefully() -> None:
         patch("app.services.insights._get_embedding_model", return_value=MagicMock()),
         patch("bertopic.BERTopic", return_value=fake_topic_model),
     ):
-        themes, review_to_topic = svc.cluster_all_reviews(
-            reviews, classifications, coords_2d
-        )
+        themes, review_to_topic = svc.cluster_all_reviews(reviews, classifications, coords_2d)
     assert themes == []
     assert review_to_topic == {}
 
@@ -214,9 +210,7 @@ def test_cluster_handles_bertopic_failure_gracefully() -> None:
 def test_cluster_returns_empty_when_no_coords() -> None:
     reviews = [_review(1, i) for i in range(5)]
     classifications = {f"r{i}": SentimentClass.NEGATIVE for i in range(5)}
-    themes, review_to_topic = svc.cluster_all_reviews(
-        reviews, classifications, coords_2d=None
-    )
+    themes, review_to_topic = svc.cluster_all_reviews(reviews, classifications, coords_2d=None)
     assert themes == []
     assert review_to_topic == {}
 
