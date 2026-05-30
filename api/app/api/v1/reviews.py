@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import asyncio
 import csv
 import io
 import json
 import random
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable
 from typing import Annotated, Any, Literal
 
 import anyio
@@ -107,6 +108,34 @@ def _event(payload: dict[str, Any]) -> bytes:
     return (json.dumps(payload, default=str) + "\n").encode("utf-8")
 
 
+# Emit a keepalive at least this often while a long stage runs.
+_HEARTBEAT_SECONDS = 10.0
+
+
+async def _pump(coro: Awaitable[Any], holder: dict[str, Any]) -> AsyncIterator[bytes]:
+    """
+    Drive `coro` to completion, emitting a heartbeat every _HEARTBEAT_SECONDS while
+    it runs, and store the result on holder["value"].
+
+    Long stages (fetching every review, NLP over the full sample) otherwise send no
+    bytes for minutes. Idle-sensitive hops — browser sockets, load balancers, Cloud
+    Run — drop a connection that goes quiet that long, and the client's read loop
+    just ends with no result, which looked like the analysis silently stopping. The
+    heartbeat keeps the socket warm; the client ignores the event.
+    """
+    task: asyncio.Task[Any] = asyncio.ensure_future(coro)
+    try:
+        while True:
+            done, _pending = await asyncio.wait({task}, timeout=_HEARTBEAT_SECONDS)
+            if done:
+                break
+            yield _event({"type": "heartbeat"})
+    except BaseException:
+        task.cancel()
+        raise
+    holder["value"] = task.result()
+
+
 async def _collect_pipeline_events(
     request: CollectRequest,
     country: str,
@@ -132,7 +161,10 @@ async def _collect_pipeline_events(
 
     try:
         yield start("fetch", "Fetching every available review from the App Store")
-        all_reviews = await fetch_all_reviews(app_id=request.app_id, country=country)
+        fetched: dict[str, Any] = {}
+        async for hb in _pump(fetch_all_reviews(app_id=request.app_id, country=country), fetched):
+            yield hb
+        all_reviews = fetched["value"]
         yield done("fetch", detail=f"{len(all_reviews)} reviews available")
 
         yield start("sample", f"Randomly sampling up to {request.limit} reviews")
@@ -149,7 +181,12 @@ async def _collect_pipeline_events(
         yield done("metrics")
 
         yield start("sentiment", "Classifying sentiment with multilingual DistilBERT")
-        classifications = await anyio.to_thread.run_sync(classify_sentiments, reviews)
+        sentiment_out: dict[str, Any] = {}
+        async for hb in _pump(
+            anyio.to_thread.run_sync(classify_sentiments, reviews), sentiment_out
+        ):
+            yield hb
+        classifications = sentiment_out["value"]
         breakdown = compute_sentiment_breakdown(classifications)
         n_neg = breakdown.counts.get(SentimentClass.NEGATIVE, 0) + breakdown.counts.get(
             SentimentClass.VERY_NEGATIVE, 0
@@ -157,14 +194,24 @@ async def _collect_pipeline_events(
         yield done("sentiment", detail=f"{n_neg} negative reviews")
 
         yield start("embed", "Embedding reviews with MiniLM")
-        embeddings = await anyio.to_thread.run_sync(embed_all, reviews)
-        coords_2d = await anyio.to_thread.run_sync(reduce_to_2d, embeddings)
+        embed_out: dict[str, Any] = {}
+        async for hb in _pump(anyio.to_thread.run_sync(embed_all, reviews), embed_out):
+            yield hb
+        embeddings = embed_out["value"]
+        reduce_out: dict[str, Any] = {}
+        async for hb in _pump(anyio.to_thread.run_sync(reduce_to_2d, embeddings), reduce_out):
+            yield hb
+        coords_2d = reduce_out["value"]
         yield done("embed")
 
         yield start("cluster", "Clustering all reviews with BERTopic")
-        themes, review_to_topic = await anyio.to_thread.run_sync(
-            cluster_all_reviews, reviews, classifications, coords_2d
-        )
+        cluster_out: dict[str, Any] = {}
+        async for hb in _pump(
+            anyio.to_thread.run_sync(cluster_all_reviews, reviews, classifications, coords_2d),
+            cluster_out,
+        ):
+            yield hb
+        themes, review_to_topic = cluster_out["value"]
         n_pain = sum(1 for t in themes if t.is_pain_point)
         yield done("cluster", detail=f"{len(themes)} themes ({n_pain} pain points)")
 

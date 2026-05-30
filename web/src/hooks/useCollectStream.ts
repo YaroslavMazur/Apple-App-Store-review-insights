@@ -45,8 +45,18 @@ interface ErrorEvent {
   message: string;
   details?: Record<string, unknown>;
 }
+// Keepalive emitted by the server during long stages so idle proxies/load
+// balancers don't drop the streaming connection. Carries no data; ignored here.
+interface HeartbeatEvent {
+  type: "heartbeat";
+}
 
-type StreamEvent = StageStartEvent | StageDoneEvent | ResultEvent | ErrorEvent;
+type StreamEvent =
+  | StageStartEvent
+  | StageDoneEvent
+  | ResultEvent
+  | ErrorEvent
+  | HeartbeatEvent;
 
 const STAGE_ORDER: { id: StageId; label: string }[] = [
   { id: "fetch", label: "Fetching reviews from the App Store" },
@@ -76,7 +86,10 @@ export function useCollectStream() {
   }, []);
 
   const handle = useCallback(
-    (ev: StreamEvent, captured: { result: CollectResponse | null }) => {
+    (
+      ev: StreamEvent,
+      captured: { result: CollectResponse | null; errored: boolean },
+    ) => {
       if (ev.type === "stage" && ev.state === "started") {
         setStages((prev) =>
           prev.map((s) =>
@@ -100,6 +113,7 @@ export function useCollectStream() {
         captured.result = ev.data;
         setData(ev.data);
       } else if (ev.type === "error") {
+        captured.errored = true;
         setError(new ApiError(ev.code, ev.message, 500, ev.details));
       }
     },
@@ -111,7 +125,10 @@ export function useCollectStream() {
       reset();
       setIsPending(true);
 
-      const captured: { result: CollectResponse | null } = { result: null };
+      const captured: { result: CollectResponse | null; errored: boolean } = {
+        result: null,
+        errored: false,
+      };
       try {
         const res = await fetch(`${BASE}/api/v1/reviews/collect/stream`, {
           method: "POST",
@@ -148,6 +165,17 @@ export function useCollectStream() {
           qc.invalidateQueries({ queryKey: ["metrics", r.app_id, r.country] });
           qc.invalidateQueries({ queryKey: ["insights", r.app_id, r.country] });
           qc.invalidateQueries({ queryKey: ["reviews", r.app_id, r.country] });
+        } else if (!captured.errored) {
+          // Stream ended without a result or error event — the connection was
+          // dropped mid-analysis (idle timeout, proxy, server restart). Don't fail
+          // silently: tell the user so they can retry / reduce the sample size.
+          setError(
+            new ApiError(
+              "stream_interrupted",
+              "The connection dropped before the analysis finished. This can happen on very large apps — try again, or reduce the sample size.",
+              0,
+            ),
+          );
         }
         return captured.result;
       } catch (err) {
